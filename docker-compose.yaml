@@ -1,0 +1,29 @@
+
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    hostname: backend-host
+    ports:
+      - "4000:4000"
+    networks:
+      - ares-network
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    volumes:
+      - ./frontend:/app
+    environment:
+      - BACKEND_URL=http://backend:8000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - ares-network
+
+networks:
+  ares-network:
+    driver: bridge
